@@ -56,5 +56,12 @@ namespace UserMaintenance
 				sw.Close();
 			}
 		}
+
+		private void button3_Click(object sender, EventArgs e)
+		{
+			User torlendoUser = (User)listBox1.SelectedItem;
+
+			users.Remove(torlendoUser);				
+		}
 	}
 }
