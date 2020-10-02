@@ -22,11 +22,25 @@ namespace week04
 		Excel.Application xlApp;
 		Excel.Workbook xlWB;
 		Excel.Worksheet xlSheet;
+
+		string[] headers = new string[]
+			{
+				"Kód",
+				"Eladó",
+				"Oldal",
+				"Kerület",
+				"Lift",
+				"Szobák száma",
+				"Alapterület (m2)",
+				"Ár (mFt)",
+				"Négyzetméter ár (Ft/m2)"
+			};
 		public Form1()
 		{
 			InitializeComponent();
 			LoadData();
 			CreateExcel();
+
 		}
 
 		private void LoadData()
@@ -43,6 +57,7 @@ namespace week04
 				xlSheet = xlWB.ActiveSheet;
 
 				CreateTable();
+				FormatTable();
 
 				xlApp.Visible = true;
 				xlApp.UserControl = true;
@@ -64,18 +79,7 @@ namespace week04
 
 		private void CreateTable()
 		{
-			string[] headers = new string[]
-			{
-				"Kód",
-				"Eladó",
-				"Oldal",
-				"Kerület",
-				"Lift",
-				"Szobák száma",
-				"Alapterület (m2)",
-				"Ár (mFt)",
-				"Négyzetméter ár (Ft/m2)"
-			};
+			
 
 			for (int i = 1; i <= headers.Length; i++)
 			{
@@ -129,6 +133,32 @@ namespace week04
 			ExcelCoordinate += x.ToString();
 
 			return ExcelCoordinate;
+		}
+
+		private void FormatTable()
+		{
+			Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+			headerRange.Font.Bold = true;
+			headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+			headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+			headerRange.EntireColumn.AutoFit();
+			headerRange.RowHeight = 40;
+			headerRange.Interior.Color = Color.LightBlue;
+			headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+
+			int lastRowID = xlSheet.UsedRange.Rows.Count;
+
+			Excel.Range tableRange = xlSheet.get_Range(GetCell(1,1), GetCell(lastRowID,headers.Length));
+			tableRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+			Excel.Range firstRow = xlSheet.get_Range(GetCell(2, 1), GetCell(lastRowID, 1));
+			firstRow.Font.Bold = true;
+			firstRow.Interior.Color = Color.LightYellow;
+
+			Excel.Range lastRow = xlSheet.get_Range(GetCell(2, headers.Length), GetCell(lastRowID, headers.Length));
+			lastRow.Interior.Color = Color.LightGreen;
+			lastRow.NumberFormat = "#.00";
 		}
 	}
 }
