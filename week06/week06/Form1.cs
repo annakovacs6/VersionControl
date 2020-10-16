@@ -17,11 +17,19 @@ namespace week06
 	public partial class Form1 : Form
 	{
 		BindingList<RateData> Rates = new BindingList<RateData>();
-		private string result;
+		
 
 		public Form1()
 		{
+
 			InitializeComponent();
+			RefreshData();
+		}
+
+		private void RefreshData()
+		{
+			Rates.Clear();
+
 			CallWebService();
 			ProcessXML();
 			CreateChart();
@@ -35,9 +43,9 @@ namespace week06
 
 			var request = new GetExchangeRatesRequestBody()
 			{
-				currencyNames = "EUR",
-				startDate = "2020-01-01",
-				endDate = "2020-06-30"
+				currencyNames = comboBox1.SelectedItem.ToString(),
+				startDate = dateTimePicker1.Value.ToString(),
+				endDate = dateTimePicker2.Value.ToString()
 			};
 
 			var response = mnbService.GetExchangeRates(request);
@@ -54,7 +62,7 @@ namespace week06
 				var rate = new RateData();
 				Rates.Add(rate);
 
-				rate.Date = DateTime.Parse(element.GetAttribute("date");
+				rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
 				var childElement = (XmlElement)element.ChildNodes[0];
 				rate.Currency = childElement.GetAttribute("curr");
@@ -88,5 +96,19 @@ namespace week06
 			chartArea.AxisY.IsStartedFromZero = false;
 		}
 
+		private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+		{
+			RefreshData();
+		}
+
+		private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+		{
+			RefreshData();
+		}
+
+		private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			RefreshData();
+		}
 	}
 }
