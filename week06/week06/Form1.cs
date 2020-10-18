@@ -17,12 +17,32 @@ namespace week06
 	public partial class Form1 : Form
 	{
 		BindingList<RateData> Rates = new BindingList<RateData>();
-		
+		BindingList<string> Currencies = new BindingList<string>();
 
 		public Form1()
 		{
 
 			InitializeComponent();
+
+			dataGridView1.DataSource = Rates;
+			comboBox1.DataSource = Currencies;
+
+			var mnbService = new MNBArfolyamServiceSoapClient();
+			var currRequest = new GetCurrenciesRequestBody();
+			var currResponse = mnbService.GetCurrencies(currRequest);
+			var currResult = currResponse.GetCurrenciesResult;
+
+			var xml = new XmlDocument();
+			xml.LoadXml(currResult);
+
+			foreach (XmlElement element in xml.DocumentElement)
+			{
+				
+				Currencies.Add(currResult);
+
+				
+			}
+
 			RefreshData();
 		}
 
@@ -31,10 +51,9 @@ namespace week06
 			Rates.Clear();
 
 			CallWebService();
-			ProcessXML();
 			CreateChart();
 
-			dataGridView1.DataSource = Rates;
+			
 		}
 
 		private void CallWebService()
@@ -50,10 +69,7 @@ namespace week06
 
 			var response = mnbService.GetExchangeRates(request);
 			var result = response.GetExchangeRatesResult;
-		}
 
-		private void ProcessXML()
-		{
 			var xml = new XmlDocument();
 			xml.LoadXml(result);
 
@@ -65,16 +81,22 @@ namespace week06
 				rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
 				var childElement = (XmlElement)element.ChildNodes[0];
+				if (childElement == null)
+					continue;
 				rate.Currency = childElement.GetAttribute("curr");
+
+				
 
 				var unit = decimal.Parse(childElement.GetAttribute("unit"));
 				var value = decimal.Parse(childElement.InnerText);
-				if (unit !=0)
+				if (unit != 0)
 				{
 					rate.Value = value / unit;
 				}
 			}
 		}
+
+		
 
 		private void CreateChart()
 		{
