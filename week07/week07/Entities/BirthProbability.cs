@@ -4,7 +4,7 @@ using System.Text;
 
 namespace week07.Entities
 {
-	class BirthProbability
+	public class BirthProbability
 	{
 		public int Age { get; set; }
 		public int NbrOfChildren { get; set; }

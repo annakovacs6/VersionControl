@@ -4,7 +4,7 @@ using System.Text;
 
 namespace week07.Entities
 {
-	class DeathProbability
+	public class DeathProbability
 	{
 		public Gender Gender { get; set; }
 
