@@ -27,9 +27,9 @@ namespace week07
         {
             InitializeComponent();
 
-            Population = GetPopulation(@"C:\Windows\Temp\nép-teszt.csv");
-            BirthProbabilities = GetBirthProbabilities(@"C:\Windows\Temp\születés.csv");
-            DeathProbabilities = GetDeathProbabilities(@"C:\Windows\Temp\halál.csv");
+            Population = GetPopulation(@"C:\Temp\nép-teszt.csv");
+            BirthProbabilities = GetBirthProbabilities(@"C:\Temp\születés.csv");
+            DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
 
         }
 
@@ -181,7 +181,7 @@ namespace week07
             {
                 textBox1.Text = ofd.FileName;
             }
-            Population = GetPopulation(@"C:\Windows\Temp\nép.csv");
+            Population = GetPopulation(@"C:\Temp\nép.csv");
 
 
         }
