@@ -28,8 +28,8 @@ namespace week07
             InitializeComponent();
 
             Population = GetPopulation(@"C:\Temp\nép-teszt.csv");
-            BirthProbabilities = GetBirthProbabilities(@"C:\Temp\születés.csv");
-            DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
+            BirthProbabilities = GetBirthProbabilities(@"C:\Temp\születés.csv");
+            DeathProbabilities = GetDeathProbabilities(@"C:\Temp\halál.csv");
 
         }
 
