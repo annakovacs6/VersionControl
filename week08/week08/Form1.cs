@@ -33,6 +33,8 @@ namespace week08
 		{
 			InitializeComponent();
 			Factory = new CarFactory();
+			Factory = new BallFactory();
+			Factory = new PresentFactory();
 		}
 
 		private void createTimer_Tick(object sender, EventArgs e)
@@ -47,18 +49,18 @@ namespace week08
 		private void conveyorTimer_Tick(object sender, EventArgs e)
 		{
 			var maxPosition = 0;
-			foreach (var ball in _toys)
+			foreach (var toy in _toys)
 			{
-				ball.MoveToy();
-				if (ball.Left > maxPosition) maxPosition = ball.Left;
+				toy.MoveToy();
+				if (toy.Left > maxPosition) maxPosition = toy.Left;
 
 			}
 
 			if (maxPosition > 1000)
 			{
-				var oldestBall = _toys[0];
-				mainPanel.Controls.Remove(oldestBall);
-				_toys.Remove(oldestBall);
+				var oldestToy = _toys[0];
+				mainPanel.Controls.Remove(oldestToy);
+				_toys.Remove(oldestToy);
 			}
 		}
 
@@ -78,13 +80,13 @@ namespace week08
 		private void DisplayNext()
 		{
 			if (_nextToy != null)
-			{
 				Controls.Remove(_nextToy);
-				_nextToy = Factory.CreateNew();
-				_nextToy.Top = lblNext.Top + lblNext.Height + 20;
-				_nextToy.Left = lblNext.Left;
-				Controls.Add(_nextToy);
-			}
+
+			_nextToy = Factory.CreateNew();
+			_nextToy.Top = lblNext.Top + lblNext.Height + 20;
+			_nextToy.Left = lblNext.Left;
+			Controls.Add(_nextToy);
+
 		}
 
 		private void btnColor_Click(object sender, EventArgs e)
@@ -95,6 +97,15 @@ namespace week08
 			colorPicker.Color = button.BackColor;
 			if (colorPicker.ShowDialog() != DialogResult.OK) return;
 			button.BackColor = colorPicker.Color;
+		}
+
+		private void btnSelectPresent_Click(object sender, EventArgs e)
+		{
+			Factory = new PresentFactory
+			{
+				RibbonColor = btnRibbonColor.BackColor,
+				BoxColor = btnBoxColor.BackColor
+			};
 		}
 	}
 }
